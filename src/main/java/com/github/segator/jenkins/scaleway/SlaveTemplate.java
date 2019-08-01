@@ -34,6 +34,8 @@ import java.util.SortedMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+
+import com.github.segator.scaleway.api.entity.*;
 import com.google.common.base.Strings;
 import hudson.Extension;
 import hudson.RelativePath;
@@ -50,15 +52,10 @@ import jenkins.model.Jenkins;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.QueryParameter;
 
-import com.github.segator.scaleway.api.entity.ScalewayServer;
 import com.github.segator.scaleway.api.ScalewayClient;
 import com.github.segator.scaleway.api.ScalewayFactory;
 import com.github.segator.scaleway.api.constants.ScalewayComputeRegion;
-import com.github.segator.scaleway.api.entity.ScalewayCommercialType;
-import com.github.segator.scaleway.api.entity.ScalewayImage;
-import com.github.segator.scaleway.api.entity.ScalewayServerAction;
-import com.github.segator.scaleway.api.entity.ScalewayServerDefinition;
-import com.github.segator.scaleway.api.entity.ScalewayState;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -184,7 +181,7 @@ public class SlaveTemplate implements Describable<SlaveTemplate> {
         LOGGER.log(Level.INFO, "slave limit check");
         int count = 0;
         for (ScalewayServer server : servers) {
-            if ((server.getState() == ScalewayState.RUNNING)) {
+            if ((server.getState() == ScalewayServerState.RUNNING)) {
                 if (ScalewayServerName.isServerInstanceOfSlave(server.getName(), cloudName, name)) {
                     count++;
                 }
@@ -227,7 +224,7 @@ public class SlaveTemplate implements Describable<SlaveTemplate> {
     }
 
     /**
-     * Create a new {@link Slave} from the given {@link Server}
+     * Create a new {@link Slave} from the given {@link ScalewayServer}
      *
      * @param server the server being created
      * @param privateKey the RSA private key being used
